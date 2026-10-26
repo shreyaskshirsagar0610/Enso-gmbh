@@ -1,0 +1,1060 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Internship work at enso</title>
+<meta name="description" content="Five workstreams from an automation internship at enso GmbH: teaser generation, HubSpot investor matching, Excel controlling, project-management tool evaluation and BMD research.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<!--
+  ==========================================================================
+  EDIT GUIDE (for Shreyas)
+
+  1. Screenshots: create a folder called "screens" next to this file and add
+     these files. Each frame shows your image automatically once it exists.
+       screens/teaser-1.png      (for example the n8n workflow)
+       screens/teaser-2.png      (for example the generated PowerPoint)
+       screens/hubspot-1.png     (the confirmed matching result)
+       screens/hubspot-2.png     (for example the VDR task or pipeline)
+       screens/excel-1.png       (the upload page or the Import_Report sheet)
+       screens/excel-2.png       (the Project_Summary sheet and chart)
+       screens/openproject-1.png (the Gantt view of the demo project)
+     You can change names or add more in CONFIG.screens.
+
+  2. Live demos: put the local address of each tool in CONFIG.live
+     (for example the bookmarked upload page). "Open live demo" then opens it.
+
+  3. Presenting: Arrow keys or Space move between slides.
+     T shows a timer, N shows your speaker notes, F switches to full screen,
+     B opens the backup slides on AI and automation ideas.
+  ==========================================================================
+-->
+<style>
+:root{
+  --abyss:#06161F;
+  --tarn:#0C2733;
+  --tarn-2:#113744;
+  --deals:#7FE0DC;
+  --finance:#E0A84E;
+  --pm:#C3A6FF;
+  --sky:#8DB8FF;
+  --sage:#A8D69A;
+  --coral:#FF8A78;
+  --snow:#E8F1EF;
+  --mist:#93AEB2;
+  --line:rgba(127,224,220,.16);
+  --line-strong:rgba(127,224,220,.32);
+  --font:'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-snap-type:y proximity}
+body{
+  margin:0;background-color:var(--abyss);color:var(--snow);
+  font-family:var(--font);font-size:clamp(15px,1.05vw,17px);line-height:1.55;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  background-image:
+    radial-gradient(1100px 700px at 88% -5%, rgba(47,184,179,.09), transparent 62%),
+    radial-gradient(800px 600px at -5% 60%, rgba(224,168,78,.05), transparent 60%);
+  background-attachment:fixed;
+}
+a{color:var(--deals);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--finance);outline-offset:3px;border-radius:4px}
+h1,h2,h3,h4{margin:0;line-height:1.1}
+p{margin:0 0 .8em}
+ul{margin:0}
+.muted{color:var(--mist)}
+
+/* ---------- top bar ---------- */
+.topbar{position:fixed;inset:0 0 auto 0;height:52px;display:flex;align-items:center;gap:20px;padding:0 24px;z-index:40;
+  background:rgba(6,22,31,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{font-stretch:125%;font-weight:800;color:var(--snow);text-decoration:none;font-size:1rem;white-space:nowrap}
+.prog{flex:1;display:flex;gap:5px;max-width:560px;margin:0 auto}
+.prog button{flex:1;height:22px;padding:0;border:0;background:none;cursor:pointer;position:relative}
+.prog button::before{content:"";position:absolute;left:0;right:0;top:9px;height:4px;border-radius:4px;background:rgba(127,224,220,.14);transition:background .3s}
+.prog button.done::before{background:rgba(127,224,220,.45)}
+.prog button.cur::before{background:var(--deals);box-shadow:0 0 10px rgba(127,224,220,.6)}
+.prog button.bk::before{background:rgba(195,166,255,.25)}
+.prog button.bk.cur::before{background:var(--pm)}
+.prog .tip{position:absolute;top:26px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.75rem;color:var(--snow);background:var(--tarn);border:1px solid var(--line-strong);padding:.15em .55em;border-radius:5px;opacity:0;pointer-events:none;transition:opacity .2s}
+.prog button:hover .tip,.prog button:focus-visible .tip{opacity:1}
+.count{font-variant-numeric:tabular-nums;color:var(--mist);font-size:.88rem;white-space:nowrap;min-width:48px;text-align:right}
+
+/* ---------- slides ---------- */
+.slide{min-height:100vh;min-height:100svh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;padding:74px 0 34px;position:relative}
+.inner{width:100%;max-width:1280px;margin:0 auto;padding:0 44px}
+.slide h2{font-size:clamp(1.65rem,2.7vw,2.6rem);font-stretch:120%;font-weight:780;letter-spacing:-.01em;max-width:28ch}
+.lead{color:var(--mist);font-size:1.06em;max-width:64ch;margin-top:.6em}
+[data-anim]{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease;transition-delay:calc(var(--i,0) * 120ms)}
+.slide.on [data-anim]{opacity:1;transform:none}
+
+/* ---------- buttons, tags ---------- */
+.btn{font:inherit;font-weight:620;font-size:.92rem;padding:.62em 1.05em;border-radius:7px;border:1px solid var(--line-strong);
+  background:rgba(12,39,51,.6);color:var(--snow);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.55em;transition:background .2s,border-color .2s,transform .1s}
+.btn:hover{background:rgba(127,224,220,.1);border-color:var(--deals)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--deals);border-color:var(--deals);color:#032228}
+.btn.primary:hover{background:#A6EEEA}
+.btn.ghost{background:none;border-color:transparent;color:var(--mist)}
+.btn.ghost:hover{color:var(--snow);background:rgba(127,224,220,.07)}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#E5484D;box-shadow:0 0 0 0 rgba(229,72,77,.6);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(229,72,77,0)}100%{box-shadow:0 0 0 0 rgba(229,72,77,0)}}
+.area{display:inline-flex;align-items:center;gap:.5em;font-size:.84rem;font-weight:650;color:var(--c)}
+.area::before{content:"";width:18px;height:3px;border-radius:3px;background:var(--c)}
+.a-deals{--c:var(--deals)} .a-finance{--c:var(--finance)} .a-pm{--c:var(--pm)} .a-asset{--c:var(--sky)}
+.badge{display:inline-flex;align-items:center;gap:.5em;font-size:.8rem;font-weight:600;padding:.28em .8em;border-radius:999px;border:1px solid rgba(232,241,239,.28);color:var(--snow);background:rgba(232,241,239,.05);white-space:nowrap}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--snow);opacity:.8}
+
+/* ---------- title slide ---------- */
+.hero{justify-content:flex-end;overflow:hidden;padding-bottom:56px}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:52%;background:linear-gradient(to top,var(--abyss) 20%,rgba(6,22,31,.85) 48%,transparent);pointer-events:none}
+.hero-labels{position:absolute;inset:0;pointer-events:none;z-index:1}
+.hl{position:absolute;left:0;top:0;font-size:.8rem;font-weight:620;color:var(--snow);padding:.22em .7em;border-radius:999px;white-space:nowrap;
+  background:rgba(6,22,31,.78);border:1px solid var(--c);will-change:transform;opacity:0;transition:opacity .8s}
+.loaded .hl{opacity:1}
+.hero .inner{position:relative;z-index:2}
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.hero h1{font-size:clamp(2.2rem,4.6vw,4rem);font-stretch:125%;font-weight:830;line-height:1.0;letter-spacing:-.018em;max-width:20ch;margin-bottom:.38em}
+.hero .lede{font-size:clamp(1.02rem,1.4vw,1.2rem);max-width:58ch}
+.byline{color:var(--mist);font-size:.95rem}
+.hero-row{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:1.2em}
+.keys{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--mist)}
+.keys kbd{font:inherit;font-weight:700;color:var(--snow);border:1px solid var(--line-strong);border-radius:4px;padding:0 .4em;margin-right:.35em}
+.no-3d #hero-canvas{display:none}
+.no-3d{background:radial-gradient(60% 50% at 70% 30%, rgba(127,224,220,.16), transparent 70%),radial-gradient(40% 40% at 85% 55%, rgba(224,168,78,.12), transparent 70%)}
+
+/* ---------- overview ---------- */
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:30px}
+.tile{position:relative;display:flex;flex-direction:column;gap:8px;text-align:left;font:inherit;color:var(--snow);cursor:pointer;
+  padding:18px 16px 16px;border-radius:14px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(17,55,68,.75),rgba(8,30,40,.85));
+  transition:transform .25s,border-color .25s,box-shadow .25s;overflow:hidden}
+.tile::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--c)}
+.tile:hover{transform:translateY(-4px);border-color:var(--c);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.tile .num{font-stretch:125%;font-weight:830;font-size:1.9rem;line-height:1;color:var(--c);opacity:.9}
+.tile h3{font-size:1.08rem;font-stretch:110%;font-weight:720;line-height:1.2}
+.tile p{font-size:.9rem;color:var(--mist);margin:0;flex:1}
+.tile .badge{align-self:flex-start;white-space:normal;line-height:1.3}
+.also{margin-top:26px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:.86rem}
+.also > span:first-child{color:var(--mist);margin-right:4px}
+.chip{font-size:.84rem;padding:.26em .7em;border-radius:6px;border:1px solid var(--line-strong);background:rgba(12,39,51,.5)}
+
+/* ---------- workstream slides ---------- */
+.ws-head{display:flex;flex-direction:column;gap:10px}
+.tags{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.ws-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:44px;align-items:center;margin-top:22px}
+.blk{margin-bottom:16px}
+.blk h4{font-size:.82rem;font-weight:650;color:var(--mist);margin-bottom:5px;letter-spacing:.01em}
+.blk p{margin:0;font-size:1.0em}
+.did{list-style:none;padding:0;display:grid;gap:7px}
+.did li{position:relative;padding-left:20px;font-size:.98em}
+.did li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:2px;background:var(--c);transform:rotate(45deg)}
+.sn{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(3,14,20,.4);font-size:.93em;margin-bottom:16px}
+.sn dt{font-weight:700;color:var(--c)}
+.sn dd{margin:0}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ws-slide .btn.primary{background:var(--c);border-color:var(--c)}
+
+/* screenshot frame (3D tilt) */
+.frame-wrap{margin:0;perspective:1600px}
+.frame{position:relative;border-radius:12px;border:1px solid rgba(232,241,239,.16);background:#0A1F29;overflow:hidden;
+  transform:rotateY(-9deg) rotateX(3deg);transform-origin:left center;transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s;
+  box-shadow:-24px 30px 60px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.2)}
+.frame:hover,.frame:focus-within{transform:none;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.07),transparent 40%)}
+.chrome{display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;background:#0F2A35;border-bottom:1px solid rgba(232,241,239,.08)}
+.chrome i{width:9px;height:9px;border-radius:50%;background:#2B4A55}
+.chrome span{margin-left:10px;font-size:.74rem;color:var(--mist)}
+.screen{position:relative;aspect-ratio:16/10;max-height:46vh;width:100%;display:grid;place-items:center;background:#081922}
+.screen img{width:100%;height:100%;object-fit:contain;display:block;cursor:zoom-in}
+.ph{display:grid;place-items:center;text-align:center;gap:8px;padding:20px;width:100%;height:100%;color:var(--mist);font-size:.88rem;
+  background:repeating-linear-gradient(0deg,rgba(127,224,220,.05) 0 1px,transparent 1px 26px),repeating-linear-gradient(90deg,rgba(127,224,220,.05) 0 1px,transparent 1px 26px)}
+.ph b{display:block;color:var(--snow);font-weight:650;font-size:1rem;margin-bottom:4px}
+.ph code{font-size:.8rem;color:var(--c)}
+.ph-ic{width:44px;height:44px;border-radius:10px;border:1.5px dashed var(--c);display:grid;place-items:center;margin:0 auto 6px;color:var(--c);font-size:1.3rem}
+.dots{position:absolute;right:10px;bottom:10px;display:flex;gap:6px;z-index:2}
+.dots button{width:9px;height:9px;border-radius:50%;border:0;padding:0;background:rgba(232,241,239,.35);cursor:pointer}
+.dots button[aria-pressed="true"]{background:var(--snow)}
+.frame-wrap figcaption{margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:.8rem;color:var(--mist)}
+.frame-wrap figcaption .chip{font-size:.78rem;padding:.18em .6em}
+
+/* info card (for research slides without a screenshot) */
+.card{border-radius:12px;border:1px solid rgba(232,241,239,.16);background:linear-gradient(180deg,rgba(17,55,68,.7),rgba(8,30,40,.85));padding:20px 22px;
+  transform:rotateY(-9deg) rotateX(3deg);transform-origin:left center;transition:transform .6s cubic-bezier(.2,.8,.2,1);box-shadow:-24px 30px 60px rgba(0,0,0,.4)}
+.card:hover{transform:none}
+.card h4{font-size:.82rem;color:var(--mist);font-weight:650;margin:0 0 8px}
+.card .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.card .chips .chip.pick{border-color:var(--c);color:var(--c);font-weight:650}
+.qs{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:.92rem}
+.qs li::before{content:"?";display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1px solid var(--c);color:var(--c);font-size:.7rem;font-weight:800;margin-right:8px}
+.decision{margin-top:4px;padding:11px 14px;border-radius:9px;border:1px solid var(--c);background:rgba(195,166,255,.07);font-size:.93rem}
+
+/* animated workflow strip */
+.flow{list-style:none;margin:26px 0 0;padding:0;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:8px;position:relative}
+.flow::before{content:"";position:absolute;left:calc(50% / var(--n));right:calc(50% / var(--n));top:15px;height:2px;background:rgba(232,241,239,.1)}
+.flow .fill{position:absolute;left:calc(50% / var(--n));top:15px;height:2px;width:0;background:var(--c);box-shadow:0 0 10px var(--c);
+  transition:width calc(var(--n) * 330ms) linear .35s}
+.slide.on .flow .fill{width:calc(var(--done) / var(--n) * 100% - 100% / var(--n))}
+.flow .pk{position:absolute;top:11px;left:calc(50% / var(--n));width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 12px var(--c),0 0 4px #fff;opacity:0}
+.slide.on .flow .pk{animation:travel 3.4s ease-in-out infinite;animation-delay:calc(var(--n) * 330ms + .6s)}
+@keyframes travel{0%{opacity:0;left:calc(50% / var(--n))}10%{opacity:1}85%{opacity:1}100%{opacity:0;left:calc(50% / var(--n) + (var(--done) - 1) / var(--n) * 100%)}}
+.flow li{position:relative;text-align:center;font-size:.84rem;line-height:1.25;color:var(--mist)}
+.flow .dot{width:32px;height:32px;margin:0 auto 7px;border-radius:50%;display:grid;place-items:center;font-weight:760;font-size:.82rem;
+  border:2px solid rgba(232,241,239,.2);background:var(--abyss);color:var(--mist);position:relative;z-index:1;transition:all .4s;transition-delay:calc(var(--k) * 330ms + .35s)}
+.flow li .lb{transition:color .4s;transition-delay:calc(var(--k) * 330ms + .35s)}
+.slide.on .flow li.d .dot{border-color:var(--c);color:#032228;background:var(--c);box-shadow:0 0 0 5px color-mix(in srgb,var(--c) 18%,transparent)}
+.slide.on .flow li.d .lb{color:var(--snow)}
+.flow li.nx .dot{border-style:dashed}
+.flow li.nx .lb::after{content:"next";display:block;font-size:.72rem;color:var(--c);margin-top:2px}
+
+/* weights bar */
+.weights{margin:4px 0 16px}
+.wbar{display:flex;height:28px;border-radius:7px;overflow:hidden;border:1px solid var(--line);background:rgba(3,14,20,.4)}
+.wbar span{display:grid;place-items:center;font-size:.76rem;font-weight:750;color:#032228;width:0;overflow:hidden;white-space:nowrap;
+  border-right:1px solid rgba(6,22,31,.45);transition:width .8s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--k) * 90ms + .5s)}
+.slide.on .wbar span{width:var(--w)}
+.wleg{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:7px;font-size:.78rem;color:var(--mist)}
+.wleg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.wleg b{color:var(--snow);font-weight:650}
+
+/* ---------- summary ---------- */
+.tbl{margin-top:24px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tbl table{width:100%;border-collapse:collapse;font-size:.95rem}
+.tbl th{text-align:left;font-size:.8rem;font-weight:620;color:var(--mist);padding:11px 16px;background:rgba(3,14,20,.55);border-bottom:1px solid var(--line)}
+.tbl td{padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td:first-child{font-weight:680;white-space:nowrap}
+.tbl td:first-child::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--c);margin-right:10px;vertical-align:0}
+.helps{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:12px;align-items:stretch;margin-top:22px}
+.helps > span{align-self:center;color:var(--mist);font-size:.9rem;max-width:12ch}
+.help{padding:13px 15px;border-radius:10px;border:1px solid var(--line-strong);background:rgba(12,39,51,.5);font-size:.93rem;font-weight:600}
+.thanks{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:28px}
+.thanks p{font-size:clamp(1.2rem,1.8vw,1.6rem);font-stretch:118%;font-weight:760;margin:0}
+
+/* ---------- backup ---------- */
+.backup h2{max-width:32ch}
+.bk-tag{display:inline-block;font-size:.8rem;color:var(--pm);border:1px solid rgba(195,166,255,.5);border-radius:999px;padding:.2em .8em;margin-bottom:12px}
+.guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px}
+.gi{padding:16px 18px;border-radius:12px;border:1px solid var(--line);background:rgba(12,39,51,.5)}
+.gi b{display:block;font-size:1rem;margin-bottom:5px;font-stretch:108%}
+.gi span{font-size:.9rem;color:var(--mist)}
+.ideas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px}
+.idea{padding:16px 18px;border-radius:12px;border:1px solid var(--line);background:rgba(12,39,51,.5);border-top:3px solid var(--c);font-size:.9rem}
+.idea b{display:block;font-size:1.02rem;margin:8px 0 5px;font-stretch:108%}
+.idea .area{font-size:.78rem}
+.idea .ctx{font-size:.92rem}
+.support{list-style:none;padding:0;margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.support li{padding:18px 20px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(17,55,68,.7),rgba(8,30,40,.85));font-size:1rem;font-weight:600;line-height:1.4;position:relative;padding-left:44px}
+.support li::before{content:"";position:absolute;left:20px;top:25px;width:9px;height:9px;border-radius:2px;background:var(--deals);transform:rotate(45deg)}
+.idea .ctx{color:var(--mist);margin:0 0 6px}
+.idea .on-top{color:var(--c);font-size:.82rem}
+.srcs{margin-top:18px;font-size:.78rem;color:var(--mist)}
+
+/* ---------- presenter tools ---------- */
+.timer{position:fixed;right:18px;bottom:18px;z-index:50;display:grid;gap:2px;padding:10px 14px;border-radius:10px;background:rgba(12,39,51,.92);border:1px solid var(--line-strong);font-size:.8rem;color:var(--mist);min-width:190px;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.timer b{font-size:1.4rem;color:var(--snow);font-variant-numeric:tabular-nums;font-stretch:115%}
+.timer .over{color:var(--finance)}
+.notes{position:fixed;left:18px;bottom:18px;z-index:50;max-width:440px;padding:14px 16px;border-radius:10px;background:rgba(12,39,51,.95);border:1px solid var(--line-strong);font-size:.88rem;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.notes h5{margin:0 0 6px;font-size:.78rem;color:var(--mist);font-weight:620}
+.notes ul{padding-left:1.1em}
+.notes li{margin-bottom:.3em}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--tarn-2);border:1px solid var(--deals);color:var(--snow);
+  padding:.7em 1.1em;border-radius:10px;font-size:.92rem;box-shadow:0 14px 40px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:60;max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+dialog.lightbox{border:0;padding:0;background:transparent;max-width:94vw;max-height:92vh}
+dialog.lightbox::backdrop{background:rgba(3,10,14,.86)}
+dialog.lightbox img{max-width:94vw;max-height:88vh;display:block;border-radius:10px}
+dialog.lightbox button{position:absolute;top:10px;right:10px}
+
+/* ---------- responsive ---------- */
+@media (max-width:1150px){
+  .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .ideas,.guide,.support{grid-template-columns:1fr 1fr}
+}
+@media (max-width:900px){
+  html{scroll-snap-type:none}
+  .slide{min-height:auto;padding:84px 0 40px}
+  .hero{min-height:100svh}
+  .inner{padding:0 20px}
+  .ws-grid{grid-template-columns:1fr;gap:26px}
+  .frame,.card{transform:none}
+  .tiles{grid-template-columns:1fr 1fr}
+  .helps{grid-template-columns:1fr}
+  .helps > span{max-width:none}
+  .flow{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:16px}
+  .flow::before,.flow .fill,.flow .pk{display:none}
+  .tbl{overflow-x:auto}
+  .tbl table{min-width:640px}
+  .timer,.notes{display:none}
+  .prog{display:none}
+  .topbar{justify-content:space-between}
+}
+@media (max-width:600px){
+  .tiles,.ideas,.guide,.support{grid-template-columns:1fr}
+  .hl{font-size:.66rem}
+  .hero h1{font-size:2rem}
+  .qs{grid-template-columns:1fr}
+  .keys{display:none}
+}
+@media (max-height:820px) and (min-width:901px){
+  .slide{padding-top:60px;padding-bottom:14px}
+  .slide h2{font-size:clamp(1.4rem,2.2vw,2.05rem)}
+  .ws-slide .inner{font-size:.93em}
+  .ws-head{gap:6px}
+  .ws-grid{margin-top:12px;gap:36px}
+  .blk{margin-bottom:9px}
+  .blk h4{margin-bottom:3px}
+  .did{gap:3px}
+  .sn{padding:8px 12px;margin-bottom:10px}
+  .weights{margin:0 0 10px}
+  .wbar{height:24px}
+  .wleg{margin-top:5px}
+  .btn{padding:.5em .95em}
+  .screen{max-height:40vh}
+  .flow{margin-top:14px}
+  .flow .dot{width:28px;height:28px;margin-bottom:5px}
+  .flow::before,.flow .fill{top:13px}
+  .flow .pk{top:9px}
+  .tiles{margin-top:20px}
+  .hero h1{font-size:clamp(2rem,4vw,3.3rem)}
+  .hero{padding-bottom:30px}
+  .tbl td{padding:9px 16px}
+  .helps{margin-top:16px}
+  .thanks{margin-top:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0s!important}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#s-title" id="brand-name">Shreyas</a>
+  <nav class="prog" id="prog" aria-label="Slides"></nav>
+  <span class="count" id="count" aria-live="polite"></span>
+</header>
+
+<main id="deck">
+<!-- ================= 1. TITLE ================= -->
+<section class="slide hero" id="s-title" data-title="Start" data-time="30">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-labels" id="hero-labels" aria-hidden="true"></div>
+  <div class="inner">
+    <div class="legend" data-anim>
+      <span class="area a-deals">Deals and investors</span>
+      <span class="area a-finance">Finance and controlling</span>
+      <span class="area a-pm">Project management</span>
+    </div>
+    <h1 data-anim style="--i:1">Automation across deals, finance and project management.</h1>
+    <p class="lede" data-anim style="--i:2">Five workstreams from my internship at enso: what I built, tested, demonstrated and researched, and what each one needs next.</p>
+    <p class="byline" id="byline" data-anim style="--i:3"></p>
+    <div class="hero-row" data-anim style="--i:4">
+      <button class="btn primary" type="button" data-go="next">Start the walkthrough</button>
+      <div class="keys" aria-hidden="true"><span><kbd>→</kbd>next</span><span><kbd>T</kbd>timer</span><span><kbd>N</kbd>notes</span><span><kbd>F</kbd>full screen</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 2. OVERVIEW ================= -->
+<section class="slide" id="s-overview" data-title="Overview" data-time="60">
+  <div class="inner">
+    <h2 data-anim>Five workstreams, three areas of the company</h2>
+    <p class="lead" data-anim style="--i:1">Each one gets the same structure: the problem, what I did, where it stands today, and the next step.</p>
+    <div class="tiles" id="tiles" data-anim style="--i:2"></div>
+    <div class="also" data-anim style="--i:7">
+      <span>Also part of my work:</span>
+      <span class="chip">Sample documents and test data</span>
+      <span class="chip">Normal, mismatch and changed-input testing</span>
+      <span class="chip">Workflow documentation</span>
+      <span class="chip">Software comparisons and procurement clarification</span>
+      <span class="chip">Access and hosting requirements</span>
+      <span class="chip">Practical office support</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 3. TEASER ================= -->
+<section class="slide ws-slide a-deals" id="s-teaser" data-title="Teaser generator" data-time="110">
+  <div class="inner">
+    <header class="ws-head" data-anim>
+      <div class="tags"><span class="area a-deals">Deals and investors</span><span class="badge">Working local prototype</span></div>
+      <h2>Project documents to a teaser draft in our company template</h2>
+    </header>
+    <div class="ws-grid">
+      <div data-anim style="--i:1">
+        <div class="blk"><h4>The problem</h4><p>A teaser means reading project documents, extracting technical and commercial information, copying it into the template and checking it for consistency.</p></div>
+        <div class="blk"><h4>What I did</h4><ul class="did">
+          <li>Web upload that combines up to four project PDFs into one output</li>
+          <li>Extraction into structured data, with checks for conflicting and missing values</li>
+          <li>Python generates the PowerPoint in the company layout, with country slide content and standardized file names</li>
+          <li>Tested on sample projects and improved with my manager's feedback</li>
+        </ul></div>
+        <dl class="sn"><dt>Today</dt><dd>Working local prototype with successful tests</dd><dt>Next</dt><dd>Final quality checks, review and deployment arrangements</dd></dl>
+        <div class="actions"><button class="btn primary" type="button" data-live="teaser"><span class="live-dot"></span>Open live demo</button></div>
+      </div>
+      <figure class="frame-wrap" data-anim style="--i:2">
+        <div class="frame" data-screens="teaser"><div class="chrome"><i></i><i></i><i></i><span>Teaser generator</span></div><div class="screen"></div></div>
+        <figcaption>Built with <span class="chip">n8n</span><span class="chip">Claude</span><span class="chip">Python</span><span class="chip">Docker</span><span class="chip">JSON</span><span class="chip">PowerPoint</span></figcaption>
+      </figure>
+    </div>
+    <ol class="flow" data-flow="teaser" data-anim style="--i:3"></ol>
+  </div>
+</section>
+
+<!-- ================= 4. HUBSPOT ================= -->
+<section class="slide ws-slide a-deals" id="s-hubspot" data-title="HubSpot CRM and matching" data-time="110">
+  <div class="inner">
+    <header class="ws-head" data-anim>
+      <div class="tags"><span class="area a-deals">Deals and investors</span><span class="badge">Prototype tested with test records</span></div>
+      <h2>One investor and project base in HubSpot, with explained matching</h2>
+    </header>
+    <div class="ws-grid">
+      <div data-anim style="--i:1">
+        <div class="blk"><h4>The problem</h4><p>Comparing a project with many investor mandates by hand is repetitive and can lead to inconsistent shortlists.</p></div>
+        <div class="blk"><h4>What I did</h4><ul class="did">
+          <li>HubSpot structure: investors as companies, projects as deals, with matching properties, lists, pipeline and dashboards</li>
+          <li>A weighted matching workflow in n8n that ranks investors and explains every criterion</li>
+          <li>Tested an automatic VDR follow-up task and a required reason for "Not Pursued"</li>
+        </ul></div>
+        <div class="weights" aria-label="Matching weights: country 25, technology 20, investment type 20, ticket size 15, project stage 10, region 5, currency 5. Maximum 100.">
+          <div class="wbar" id="wbar"></div>
+          <div class="wleg" id="wleg"></div>
+        </div>
+        <dl class="sn"><dt>Today</dt><dd>Tested with test records, including a Zambia solar + BESS project. Scores show rule-based compatibility, not investment probability.</dd><dt>Next</dt><dd>Validate the rules with colleagues, test real records, define shared access</dd></dl>
+        <div class="actions"><button class="btn primary" type="button" data-live="hubspot"><span class="live-dot"></span>Open live demo</button></div>
+      </div>
+      <figure class="frame-wrap" data-anim style="--i:2">
+        <div class="frame" data-screens="hubspot"><div class="chrome"><i></i><i></i><i></i><span>HubSpot and n8n</span></div><div class="screen"></div></div>
+        <figcaption>Built with <span class="chip">HubSpot</span><span class="chip">Private-app API</span><span class="chip">n8n</span><span class="chip">JavaScript scoring</span></figcaption>
+      </figure>
+    </div>
+    <ol class="flow" data-flow="hubspot" data-anim style="--i:3"></ol>
+  </div>
+</section>
+
+<!-- ================= 5. EXCEL ================= -->
+<section class="slide ws-slide a-finance" id="s-excel" data-title="Excel controlling" data-time="110">
+  <div class="inner">
+    <header class="ws-head" data-anim>
+      <div class="tags"><span class="area a-finance">Finance and controlling</span><span class="badge">Local demo, shown to my manager</span></div>
+      <h2>Cost data into the controlling workbook, with checks and a summary</h2>
+    </header>
+    <div class="ws-grid">
+      <div data-anim style="--i:1">
+        <div class="blk"><h4>The problem</h4><p>Moving cost information into large controlling workbooks by hand takes time and can introduce mistakes.</p></div>
+        <div class="blk"><h4>What I did</h4><ul class="did">
+          <li>A bookmarked local upload page: n8n coordinates, a Python helper does the processing</li>
+          <li>Fills actual costs and checks for duplicates and missing or invalid data</li>
+          <li>Creates an Import_Report sheet, a Project_Summary sheet and a budget-versus-cost chart</li>
+          <li>Programmed rules only, no AI needed for this task</li>
+        </ul></div>
+        <dl class="sn"><dt>Today</dt><dd>Works with sample files, demonstrated to my manager with different test cases</dd><dt>Next</dt><dd>Real workbooks and source data (BMD exports, CSV or Excel), mapping, validation, shared deployment</dd></dl>
+        <div class="actions"><button class="btn primary" type="button" data-live="excel"><span class="live-dot"></span>Open live demo</button></div>
+      </div>
+      <figure class="frame-wrap" data-anim style="--i:2">
+        <div class="frame" data-screens="excel"><div class="chrome"><i></i><i></i><i></i><span>Controlling workflow</span></div><div class="screen"></div></div>
+        <figcaption>Built with <span class="chip">Python</span><span class="chip">openpyxl</span><span class="chip">FastAPI</span><span class="chip">Uvicorn</span><span class="chip">n8n</span><span class="chip">Excel</span></figcaption>
+      </figure>
+    </div>
+    <ol class="flow" data-flow="excel" data-anim style="--i:3"></ol>
+  </div>
+</section>
+
+<!-- ================= 6. OPENPROJECT ================= -->
+<section class="slide ws-slide a-pm" id="s-pm" data-title="Project-management tool" data-time="110">
+  <div class="inner">
+    <header class="ws-head" data-anim>
+      <div class="tags"><span class="area a-pm">Project management</span><span class="badge">Team decision supported</span></div>
+      <h2>A tested basis for choosing our project-management tool</h2>
+    </header>
+    <div class="ws-grid">
+      <div data-anim style="--i:1">
+        <div class="blk"><h4>The problem</h4><p>The company needed one place for tasks, schedules, dependencies, milestones, budgets and time and cost information.</p></div>
+        <div class="blk"><h4>What I did</h4><ul class="did">
+          <li>Compared four tools on collaboration, scheduling, reporting, hosting and integration</li>
+          <li>Built a local OpenProject demo in Docker: a four-phase project with work packages, Gantt view, dependencies, milestones, budgets and time entries</li>
+          <li>Clarified cloud questions: ten users, IT setup, external access, Outlook reminders, accounting imports, reporting and API</li>
+        </ul></div>
+        <dl class="sn"><dt>Today</dt><dd>The team decided to proceed toward OpenProject Basic Cloud for ten users</dd><dt>Next</dt><dd>Setting up the cloud version</dd></dl>
+        <div class="actions"><button class="btn primary" type="button" data-live="openproject"><span class="live-dot"></span>Open live demo</button></div>
+      </div>
+      <figure class="frame-wrap" data-anim style="--i:2">
+        <div class="frame" data-screens="openproject"><div class="chrome"><i></i><i></i><i></i><span>OpenProject demo</span></div><div class="screen"></div></div>
+        <figcaption>Compared <span class="chip" style="border-color:var(--pm);color:var(--pm)">OpenProject</span><span class="chip">Microsoft Planner</span><span class="chip">ProjectLibre</span><span class="chip">Jira</span></figcaption>
+      </figure>
+    </div>
+    <ol class="flow" data-flow="openproject" data-anim style="--i:3"></ol>
+  </div>
+</section>
+
+<!-- ================= 7. BMD ================= -->
+<section class="slide ws-slide a-finance" id="s-bmd" data-title="BMD and accounting" data-time="110">
+  <div class="inner">
+    <header class="ws-head" data-anim>
+      <div class="tags"><span class="area a-finance">Finance and controlling</span><span class="badge">Research and requirements</span></div>
+      <h2>Groundwork for less manual invoice processing</h2>
+    </header>
+    <div class="ws-grid">
+      <div data-anim style="--i:1">
+        <div class="blk"><h4>The problem</h4><p>Management wants to reduce manual invoice processing and repetitive accounting administration.</p></div>
+        <div class="blk"><h4>What I did</h4><ul class="did">
+          <li>Investigated BMD invoice processing, incoming-invoice review and approval</li>
+          <li>Assessed Finmatics, import and export routes, and links to controlling and project management</li>
+          <li>Prepared questions for the accounting team</li>
+        </ul></div>
+        <dl class="sn"><dt>Today</dt><dd>Research and requirements gathering</dd><dt>Next</dt><dd>Answers from accounting, then choose a suitable pilot</dd></dl>
+        <p class="muted" style="font-size:.92em;margin:0">The aim: check what existing software already covers before buying or building more.</p>
+      </div>
+      <div class="frame-wrap" data-anim style="--i:2">
+        <div class="card">
+          <h4>Options assessed</h4>
+          <div class="chips"><span class="chip pick">BMD</span><span class="chip">Finmatics</span><span class="chip">n8n</span><span class="chip">Python</span><span class="chip">AI APIs</span><span class="chip">File interfaces</span><span class="chip">Excel and VBA with AI help</span></div>
+          <h4>Questions prepared for accounting</h4>
+          <ul class="qs"><li>Licences</li><li>Modules</li><li>Data formats</li><li>Current processes</li><li>Access</li><li>Priorities</li></ul>
+        </div>
+      </div>
+    </div>
+    <ol class="flow" data-flow="bmd" data-anim style="--i:3"></ol>
+  </div>
+</section>
+
+<!-- ================= 8. SUPPORTING CONTRIBUTIONS ================= -->
+<section class="slide" id="s-support" data-title="Supporting contributions" data-time="30">
+  <div class="inner">
+    <h2 data-anim>Smaller supporting contributions</h2>
+    <p class="lead" data-anim style="--i:1">The work around the five workstreams.</p>
+    <ul class="support" data-anim style="--i:2">
+      <li>Preparing sample project documents and test data</li>
+      <li>Testing normal cases, mismatches and changed inputs</li>
+      <li>Writing workflow explanations and supporting documentation</li>
+      <li>Software comparisons and procurement clarification</li>
+      <li>Investigating access, hosting and shared-use requirements</li>
+      <li>Practical office support</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 9. SUMMARY ================= -->
+<section class="slide" id="s-summary" data-title="Where it stands" data-time="45">
+  <div class="inner">
+    <h2 data-anim>Where each workstream stands, and what it needs next</h2>
+    <div class="tbl" data-anim style="--i:1">
+      <table>
+        <thead><tr><th scope="col">Workstream</th><th scope="col">Today</th><th scope="col">Next step</th></tr></thead>
+        <tbody>
+          <tr style="--c:var(--deals)"><td>Teaser generator</td><td><span class="badge">Working local prototype</span></td><td>Final quality checks, review and deployment arrangements</td></tr>
+          <tr style="--c:var(--deals)"><td>HubSpot CRM and matching</td><td><span class="badge">Tested with test records</span></td><td>Validate rules with colleagues, test real records, define shared access</td></tr>
+          <tr style="--c:var(--finance)"><td>Excel controlling</td><td><span class="badge">Shown to my manager</span></td><td>Real workbooks and source data, mapping, validation, shared deployment</td></tr>
+          <tr style="--c:var(--pm)"><td>Project-management tool</td><td><span class="badge">Team decision supported</span></td><td>Setting up OpenProject Basic Cloud for ten users</td></tr>
+          <tr style="--c:var(--finance)"><td>BMD and accounting</td><td><span class="badge">Research</span></td><td>Answers from accounting, then choose a pilot</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="helps" data-anim style="--i:2">
+      <span>What would move all five forward</span>
+      <div class="help">Access to real data and records</div>
+      <div class="help">Shared hosting and access, agreed with IT</div>
+      <div class="help">Colleagues reviewing the rules and outputs</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 10. WHERE AUTOMATION CAN HELP NEXT ================= -->
+<section class="slide" id="s-next" data-title="Where automation can help next" data-time="60">
+  <div class="inner">
+    <h2 data-anim>Where automation can help next</h2>
+    <p class="lead" data-anim style="--i:1">Ideas for each area, not started yet. Each one builds on work that already exists.</p>
+    <div class="ideas" data-anim style="--i:2">
+      <div class="idea" style="--c:var(--deals)"><span class="area a-deals">Deals and investors</span><b>Teaser straight into HubSpot</b><p class="ctx">Create the HubSpot deal from the extracted teaser data, without retyping.</p><span class="on-top">Builds on the teaser generator and HubSpot</span></div>
+      <div class="idea" style="--c:var(--deals)"><span class="area a-deals">Deals and investors</span><b>Investor update drafts</b><p class="ctx">Drafts for the best-matching investors, reviewed by the deal team before sending.</p><span class="on-top">Builds on the investor matching</span></div>
+      <div class="idea" style="--c:var(--finance)"><span class="area a-finance">Finance and controlling</span><b>Controlling from BMD exports</b><p class="ctx">Feed the controlling workflow directly once the export formats are confirmed.</p><span class="on-top">Builds on the Excel controlling workflow</span></div>
+      <div class="idea" style="--c:var(--finance)"><span class="area a-finance">Accounting</span><b>Invoice approval pilot</b><p class="ctx">A small pilot, after checking what BMD and Finmatics already offer.</p><span class="on-top">Builds on the BMD research</span></div>
+      <div class="idea" style="--c:var(--pm)"><span class="area a-pm">Project management</span><b>Milestone and deadline reminders</b><p class="ctx">Permits, grid connection deadlines and project milestones, with reminders before they are due.</p><span class="on-top">Builds on the OpenProject evaluation</span></div>
+      <div class="idea" style="--c:var(--sky)"><span class="area a-asset">Asset management</span><b>Recurring asset reports</b><p class="ctx">Report drafts from controlling data in the company layout, ready for review.</p><span class="on-top">Builds on the Excel workflow and slide generation</span></div>
+    </div>
+    <div class="thanks" data-anim style="--i:3">
+      <p>Thank you. I would be glad to keep building on this.</p>
+      <button class="btn" type="button" id="open-backup">Backup: AI guideline</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BACKUP A ================= -->
+<section class="slide backup" id="s-ai" data-title="Backup: AI guideline" data-time="0" hidden>
+  <div class="inner">
+    <span class="bk-tag" data-anim>Backup for the discussion</span>
+    <h2 data-anim style="--i:1">Starting points for a simple AI guideline</h2>
+    <div class="guide" data-anim style="--i:2">
+      <div class="gi"><b>Approved tools only</b><span>Company accounts with data-processing agreements, no personal AI accounts for company data.</span></div>
+      <div class="gi"><b>Data traffic light</b><span>Public: fine. Internal: approved tools. Confidential teasers, data rooms and investor data: only after checking NDA terms and hosting.</span></div>
+      <div class="gi"><b>A person reviews</b><span>Every AI output is checked before it leaves the company, as in my workflows.</span></div>
+      <div class="gi"><b>AI literacy</b><span>A short session for staff. Under the EU AI Act, companies using AI must take measures to support their staff's AI literacy.</span></div>
+      <div class="gi"><b>One register</b><span>Which AI tools and automations run, who owns them, which data they use and where they are hosted.</span></div>
+      <div class="gi"><b>Rules first</b><span>Programmed rules where they are enough, AI only where documents need interpreting. Compliance involved early.</span></div>
+    </div>
+    <p class="srcs">Source on AI literacy: <a href="https://ki-campus.org/en/blog/eu-ai-act-ai-omnibus-recalibrates-article-4-ai-literacy-remains-mandatory" target="_blank" rel="noopener">KI-Campus, AI Omnibus and Article 4 (2026)</a></p>
+  </div>
+</section>
+
+</main>
+
+<aside class="timer" id="timer" hidden aria-live="off">
+  <span>Total <b id="t-total">00:00</b> of <span id="t-plan"></span></span>
+  <span id="t-slide"></span>
+</aside>
+<aside class="notes" id="notes" hidden><h5 id="notes-title">Speaker notes</h5><ul id="notes-list"></ul></aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog class="lightbox" id="lightbox"><img id="lb-img" alt=""><button class="btn" type="button" id="lb-close">Close</button></dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* =========================================================================
+   CONFIG: edit these values
+   ========================================================================= */
+const CONFIG = {
+  person: { name: "Shreyas", role: "Automation intern at enso" },   // add your surname
+  // Local addresses of your tools for the live demos, e.g. the bookmarked upload page
+  live: { teaser: "", hubspot: "", excel: "", openproject: "" },
+  // Screenshot files, relative to this page. Missing files show a placeholder.
+  screens: {
+    teaser:      ["screens/teaser-1.png", "screens/teaser-2.png"],
+    hubspot:     ["screens/hubspot-1.png", "screens/hubspot-2.png"],
+    excel:       ["screens/excel-1.png", "screens/excel-2.png"],
+    openproject: ["screens/openproject-1.png"]
+  },
+  screenHints: {
+    teaser: "The n8n workflow or a generated PowerPoint",
+    hubspot: "The confirmed matching result",
+    excel: "The upload page or the Import_Report sheet",
+    openproject: "The Gantt view of the demo project"
+  }
+};
+
+// Workflows, taken from the real processes. Steps starting with "~" are next steps, not done yet.
+const FLOWS = {
+  teaser: ["Project documents", "Extraction", "Structured project data", "Validation and conflict checks", "Company-template PowerPoint", "Employee review"],
+  hubspot: ["Retrieve project", "Retrieve investor data", "Compare criteria", "Calculate scores", "Rank investors", "Explain each criterion"],
+  excel: ["Upload source and target files", "n8n calls the Python helper", "Validate and map records", "Update the workbook", "Report, summary and chart", "Download and review"],
+  openproject: ["Compare four tools", "Build a local demo", "Clarify cloud questions", "Team decision", "~Cloud setup"],
+  bmd: ["Investigate options", "Prepare questions", "~Answers from accounting", "~Choose a pilot"]
+};
+
+const WEIGHTS = [
+  ["Country", 25, "#7FE0DC"], ["Technology", 20, "#8DB8FF"], ["Investment type", 20, "#A8D69A"],
+  ["Ticket size", 15, "#E0A84E"], ["Project stage", 10, "#C3A6FF"], ["Region", 5, "#FF8A78"], ["Currency", 5, "#E8F1EF"]
+];
+
+const TILES = [
+  { id: "s-teaser", area: "deals", label: "Deals and investors", title: "Teaser generator", text: "Project PDFs to a teaser draft in the company template", status: "Working local prototype" },
+  { id: "s-hubspot", area: "deals", label: "Deals and investors", title: "HubSpot CRM and matching", text: "Investor and project data, weighted matching, follow-up tasks", status: "Tested with test records" },
+  { id: "s-excel", area: "finance", label: "Finance and controlling", title: "Excel controlling", text: "Cost data into controlling workbooks, with checks", status: "Shown to my manager" },
+  { id: "s-pm", area: "pm", label: "Project management", title: "Project-management tool", text: "Four tools compared, OpenProject demo built", status: "Team decision supported" },
+  { id: "s-bmd", area: "finance", label: "Finance and controlling", title: "BMD and accounting", text: "Options to reduce manual invoice work", status: "Research" }
+];
+
+const NOTES = {
+  "s-title": ["Thank them for the time.", "Plan: five workstreams in about twelve minutes, then their questions."],
+  "s-overview": ["Three areas: deals and investors, finance and controlling, project management.", "Statuses are honest: built, tested, demonstrated, decided or researched."],
+  "s-teaser": ["Live demo: upload the sample PDFs and open the generated PowerPoint.", "Point out how conflicting and missing values are flagged.", "Lesson learned: checking how the AI read the feasibility-report status."],
+  "s-hubspot": ["Live demo: the Zambia solar + BESS test project and its ranked investors.", "Say clearly: compatibility scores, not investment probabilities.", "Show the VDR task and the required Not Pursued reason."],
+  "s-excel": ["Live demo through the bookmark: Import_Report, Project_Summary, chart.", "No AI here, only programmed rules.", "My manager will provide real workbooks next."],
+  "s-pm": ["Four tools compared; OpenProject demo built locally in Docker.", "The team decided to proceed toward Basic Cloud for ten users. Setup is not finished."],
+  "s-bmd": ["Research only, nothing implemented or bought.", "Main point: check what BMD and Finmatics already offer before building."],
+  "s-support": ["Short: the work behind the five workstreams.", "Testing and documentation make the prototypes usable by others."],
+  "s-summary": ["Walk the table quickly.", "What helps all five: real data, shared hosting with IT, colleagues reviewing."],
+  "s-next": ["Ideas only, none started.", "Each one reuses something already built.", "Thank them and hand over."],
+  "s-ai": ["Only if AI policy comes up.", "Offer to draft a one-page guideline."]
+};
+
+/* =========================================================================
+   HELPERS
+   ========================================================================= */
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const fmt = s => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+let toastTimer;
+function toast(msg) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 3200);
+}
+
+/* =========================================================================
+   CONTENT BUILDERS
+   ========================================================================= */
+function buildContent() {
+  const p = CONFIG.person;
+  $("#brand-name").textContent = p.name;
+  $("#byline").textContent = `${p.name}, ${p.role}.`;
+
+  $("#tiles").innerHTML = TILES.map((t, i) => `
+    <button class="tile a-${t.area}" type="button" data-go="${t.id}">
+      <span class="num">${i + 1}</span>
+      <span class="area a-${t.area}">${esc(t.label)}</span>
+      <h3>${esc(t.title)}</h3>
+      <p>${esc(t.text)}</p>
+      <span class="badge">${esc(t.status)}</span>
+    </button>`).join("");
+
+  $$("[data-flow]").forEach(ol => {
+    const steps = FLOWS[ol.dataset.flow];
+    const done = steps.filter(s => !s.startsWith("~")).length;
+    ol.style.setProperty("--n", steps.length);
+    ol.style.setProperty("--done", done);
+    ol.innerHTML = `<span class="fill" aria-hidden="true"></span><span class="pk" aria-hidden="true"></span>` + steps.map((s, k) => {
+      const nx = s.startsWith("~");
+      return `<li class="${nx ? "nx" : "d"}" style="--k:${k}"><span class="dot">${k + 1}</span><span class="lb">${esc(nx ? s.slice(1) : s)}</span></li>`;
+    }).join("");
+    ol.setAttribute("aria-label", "Workflow: " + steps.map(s => s.replace("~", "next: ")).join(", "));
+  });
+
+  $("#wbar").innerHTML = WEIGHTS.map((w, k) => `<span style="--w:${w[1]}%;--k:${k};background:${w[2]}">${w[1]}</span>`).join("");
+  $("#wleg").innerHTML = WEIGHTS.map(w => `<span><i style="background:${w[2]}"></i>${esc(w[0])} <b>${w[1]}</b></span>`).join("") + `<span><b>Maximum 100</b></span>`;
+}
+
+/* screenshots: show real images if the files exist, otherwise a labelled placeholder */
+function initScreens() {
+  const lb = $("#lightbox");
+  $("#lb-close").addEventListener("click", () => lb.close());
+  lb.addEventListener("click", e => { if (e.target === lb) lb.close(); });
+  $$("[data-screens]").forEach(frame => {
+    const key = frame.dataset.screens;
+    const files = CONFIG.screens[key] || [];
+    const screen = $(".screen", frame);
+    screen.innerHTML = `<div class="ph"><div><div class="ph-ic">+</div><b>Screenshot: ${esc(CONFIG.screenHints[key] || key)}</b>Save it as <code>${esc(files[0] || "screens/" + key + ".png")}</code></div></div>`;
+    const ok = [];
+    let pending = files.length;
+    const finish = () => {
+      if (--pending > 0 || !ok.length) return;
+      ok.sort((a, b) => files.indexOf(a) - files.indexOf(b));
+      let cur = 0;
+      const show = () => {
+        screen.innerHTML = `<img src="${esc(ok[cur])}" alt="Screenshot ${cur + 1} of ${ok.length}">` +
+          (ok.length > 1 ? `<div class="dots">${ok.map((_, i) => `<button type="button" aria-label="Screenshot ${i + 1}" aria-pressed="${i === cur}"></button>`).join("")}</div>` : "");
+        $("img", screen).addEventListener("click", () => { $("#lb-img").src = ok[cur]; lb.showModal(); });
+        $$(".dots button", screen).forEach((b, i) => b.addEventListener("click", e => { e.stopPropagation(); cur = i; show(); }));
+      };
+      show();
+    };
+    files.forEach(f => { const im = new Image(); im.onload = () => { ok.push(f); finish(); }; im.onerror = finish; im.src = f; });
+  });
+}
+
+function initLive() {
+  $$("[data-live]").forEach(b => b.addEventListener("click", () => {
+    const url = CONFIG.live[b.dataset.live];
+    if (url) window.open(url, "_blank", "noopener");
+    else toast(`Add the local address for this demo in CONFIG.live.${b.dataset.live}`);
+  }));
+}
+
+/* =========================================================================
+   DECK: navigation, progress, timer, notes
+   ========================================================================= */
+function initDeck() {
+  const prog = $("#prog");
+  let slides = [];
+  let cur = 0;
+  const visible = () => $$("#deck > .slide").filter(s => !s.hidden);
+
+  function buildProg() {
+    slides = visible();
+    prog.innerHTML = slides.map((s, i) => `<button type="button" class="${s.classList.contains("backup") ? "bk" : ""}" aria-label="Go to ${esc(s.dataset.title)}"><span class="tip">${esc(s.dataset.title)}</span></button>`).join("");
+    $$("button", prog).forEach((b, i) => b.addEventListener("click", () => go(i)));
+    mark();
+  }
+  function mark() {
+    $$("button", prog).forEach((b, i) => { b.classList.toggle("cur", i === cur); b.classList.toggle("done", i < cur); });
+    const main = slides.filter(s => !s.classList.contains("backup")).length;
+    $("#count").textContent = slides[cur] && slides[cur].classList.contains("backup") ? "Backup" : `${cur + 1} / ${main}`;
+    updateNotes();
+  }
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[i].scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  }
+
+  // which slide is current
+  function detect() {
+    const mid = window.scrollY + window.innerHeight * 0.45;
+    let idx = 0;
+    slides.forEach((s, i) => { if (s.offsetTop <= mid) idx = i; });
+    if (idx !== cur) { onLeave(cur); cur = idx; mark(); onEnter(cur); }
+  }
+  window.addEventListener("scroll", detect, { passive: true });
+  window.addEventListener("resize", detect);
+
+  // reveal animation
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add("on"); }), { threshold: 0.35 });
+  $$("#deck > .slide").forEach(s => io.observe(s));
+
+  // clicks that navigate
+  document.addEventListener("click", e => {
+    const t = e.target.closest("[data-go]");
+    if (!t) return;
+    if (t.dataset.go === "next") go(cur + 1);
+    else { const i = slides.findIndex(s => s.id === t.dataset.go); if (i > -1) go(i); }
+  });
+
+  // backup slides
+  function openBackup() {
+    const bks = $$(".backup");
+    const hidden = bks[0].hidden;
+    bks.forEach(s => { s.hidden = !hidden; });
+    buildProg();
+    $("#open-backup").textContent = hidden ? "Hide backup slide" : "Backup: AI guideline";
+    if (hidden) { const i = slides.indexOf(bks[0]); requestAnimationFrame(() => go(i)); }
+    else go(slides.findIndex(s => s.id === "s-next"));
+  }
+  $("#open-backup").addEventListener("click", openBackup);
+
+  // timer
+  const timer = $("#timer");
+  const plan = $$("#deck > .slide:not(.backup)").reduce((a, s) => a + (+s.dataset.time || 0), 0);
+  $("#t-plan").textContent = fmt(plan);
+  let started = null, slideStart = null, tick = null;
+  function onEnter() { slideStart = Date.now(); }
+  function onLeave() {}
+  function renderTimer() {
+    const now = Date.now();
+    const total = (now - started) / 1000;
+    const tTotal = $("#t-total");
+    tTotal.textContent = fmt(total);
+    tTotal.classList.toggle("over", total > plan);
+    const s = slides[cur];
+    const planned = +s.dataset.time || 0;
+    const el = (now - slideStart) / 1000;
+    $("#t-slide").innerHTML = planned ? `This slide <span class="${el > planned ? "over" : ""}">${fmt(el)}</span> of ${fmt(planned)}` : `This slide ${fmt(el)}`;
+  }
+  function toggleTimer() {
+    if (timer.hidden) {
+      if (!started) { started = Date.now(); slideStart = Date.now(); }
+      timer.hidden = false;
+      renderTimer();
+      tick = setInterval(renderTimer, 500);
+    } else { timer.hidden = true; clearInterval(tick); }
+  }
+
+  // notes
+  const notes = $("#notes");
+  function updateNotes() {
+    if (notes.hidden || !slides[cur]) return;
+    const s = slides[cur];
+    $("#notes-title").textContent = `Speaker notes: ${s.dataset.title}`;
+    $("#notes-list").innerHTML = (NOTES[s.id] || []).map(n => `<li>${esc(n)}</li>`).join("");
+  }
+  function toggleNotes() { notes.hidden = !notes.hidden; updateNotes(); }
+
+  // keyboard
+  document.addEventListener("keydown", e => {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest("input, select, textarea, [contenteditable]")) return;
+    if ($("#lightbox").open) return;
+    const k = e.key;
+    if (["ArrowRight", "ArrowDown", "PageDown"].includes(k) || (k === " " && !e.target.closest("button"))) { e.preventDefault(); go(cur + 1); }
+    else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(k)) { e.preventDefault(); go(cur - 1); }
+    else if (k === "Home") { e.preventDefault(); go(0); }
+    else if (k === "End") { e.preventDefault(); go(slides.length - 1); }
+    else if (k === "t" || k === "T") toggleTimer();
+    else if (k === "n" || k === "N") toggleNotes();
+    else if (k === "b" || k === "B") openBackup();
+    else if (k === "f" || k === "F") {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {});
+      else document.exitFullscreen && document.exitFullscreen();
+    }
+  });
+
+  buildProg();
+  onEnter(0);
+  detect();
+}
+
+/* =========================================================================
+   TITLE SLIDE: five streams converging (Three.js)
+   ========================================================================= */
+function initHero() {
+  const hero = $("#s-title");
+  const canvas = $("#hero-canvas");
+  const labelsEl = $("#hero-labels");
+  const done = () => requestAnimationFrame(() => { document.body.classList.add("loaded"); hero.classList.add("on"); });
+  if (!window.THREE) { hero.classList.add("no-3d"); done(); return; }
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" }); }
+  catch (e) { hero.classList.add("no-3d"); done(); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x06161f, 16, 46);
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 120);
+  const camBase = new THREE.Vector3(0, 3.0, 15);
+  const lookAt = new THREE.Vector3(0.6, -1, 0);
+
+  const spr = document.createElement("canvas");
+  spr.width = spr.height = 64;
+  const g = spr.getContext("2d");
+  const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grd.addColorStop(0, "rgba(255,255,255,1)"); grd.addColorStop(0.22, "rgba(255,255,255,.8)");
+  grd.addColorStop(0.55, "rgba(255,255,255,.18)"); grd.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+  const glow = new THREE.CanvasTexture(spr);
+
+  const tGeo = new THREE.PlaneGeometry(80, 48, 120, 72);
+  const tp = tGeo.attributes.position;
+  for (let i = 0; i < tp.count; i++) {
+    const x = tp.getX(i), y = tp.getY(i);
+    tp.setZ(i, Math.sin(x * 0.21) * 0.9 + Math.cos(y * 0.29) * 0.8 + Math.sin((x + y) * 0.11) * 1.5 + Math.max(0, y - 6) * 0.45);
+  }
+  const terrain = new THREE.Mesh(tGeo, new THREE.MeshBasicMaterial({ color: 0x1f5c66, wireframe: true, transparent: true, opacity: 0.16 }));
+  terrain.rotation.x = -Math.PI / 2;
+  terrain.position.set(0, -5.4, -10);
+  scene.add(terrain);
+
+  const C = [3.4, 0.35, 0.4];
+  const TAIL = [[6.6, 0.55, 0.2], [9.2, 0.25, -0.8], [12, 0.45, -2.6]];
+  const LANES = [
+    { label: "Teaser generator",         c: 0x7fe0dc, css: "#7FE0DC", t: 0.2,  pts: [[-11, 2.4, -2.4], [-7, 1.95, -0.6], [-3, 1.75, 0.3], [0.6, 1.1, 0.5]] },
+    { label: "HubSpot CRM and matching", c: 0x7fe0dc, css: "#7FE0DC", t: 0.3,  pts: [[-11, 1.25, -1.2], [-7, 0.95, 0.4], [-3, 1.0, 0.9], [0.6, 0.7, 0.6]] },
+    { label: "Excel controlling",        c: 0xe0a84e, css: "#E0A84E", t: 0.22, pts: [[-11, 0.1, -0.2], [-7, 0.25, 0.9], [-3, 0.15, 1.2], [0.6, 0.32, 0.7]] },
+    { label: "BMD and accounting",       c: 0xe0a84e, css: "#E0A84E", t: 0.32, pts: [[-11, -1.05, -1.0], [-7, -0.65, 0.5], [-3, -0.6, 0.8], [0.6, 0.0, 0.6]] },
+    { label: "Project-management tool",  c: 0xc3a6ff, css: "#C3A6FF", t: 0.24, pts: [[-11, -2.2, -2.2], [-7, -1.7, -0.4], [-3, -1.3, 0.4], [0.6, -0.35, 0.5]] }
+  ];
+  const vec = p => new THREE.Vector3(p[0] * 0.84, p[1], p[2]);
+  const cMerge = new THREE.Color(0xe8f1ef);
+  const lanes = LANES.map((L, li) => {
+    const curve = new THREE.CatmullRomCurve3([...L.pts, C, ...TAIL].map(vec), false, "catmullrom", 0.5);
+    // find where this lane reaches the merge point
+    const cv = vec(C);
+    let tMerge = 0.6, best = 1e9;
+    for (let i = 0; i <= 200; i++) { const d = curve.getPointAt(i / 200).distanceTo(cv); if (d < best) { best = d; tMerge = i / 200; } }
+    scene.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 320, 0.045, 8, false), new THREE.MeshBasicMaterial({ color: L.c, transparent: true, opacity: 0.55 })));
+    scene.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 320, 0.2, 10, false), new THREE.MeshBasicMaterial({ color: L.c, transparent: true, opacity: 0.05, blending: THREE.AdditiveBlending, depthWrite: false })));
+    const grp = new THREE.Group();
+    grp.position.copy(curve.getPointAt(L.t));
+    const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.16, 1), new THREE.MeshBasicMaterial({ color: L.c }));
+    const shell = new THREE.Mesh(new THREE.IcosahedronGeometry(0.38, 0), new THREE.MeshBasicMaterial({ color: L.c, wireframe: true, transparent: true, opacity: 0.55 }));
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: L.c, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }));
+    halo.scale.set(1.6, 1.6, 1);
+    grp.add(core, shell, halo);
+    scene.add(grp);
+    const el = document.createElement("span");
+    el.className = "hl";
+    el.style.setProperty("--c", L.css);
+    el.textContent = L.label;
+    labelsEl.appendChild(el);
+    const N = 22;
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(N * 3), col = new Float32Array(N * 3);
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.4, map: glow, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })));
+    return { curve, tMerge, grp, shell, halo, el, N, geo, pos, col, color: new THREE.Color(L.c), phase: li * 0.9,
+      t: Array.from({ length: N }, (_, i) => i / N + Math.random() * 0.02), s: Array.from({ length: N }, () => 0.024 + Math.random() * 0.016) };
+  });
+
+  // merge glow
+  const merge = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: 0xe8f1ef, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false }));
+  merge.position.copy(vec(C));
+  scene.add(merge);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.02, 8, 64), new THREE.MeshBasicMaterial({ color: 0xe8f1ef, transparent: true, opacity: 0.5 }));
+  ring.position.copy(vec(C));
+  scene.add(ring);
+
+  const M = 420;
+  const mGeo = new THREE.BufferGeometry();
+  const mPos = new Float32Array(M * 3);
+  for (let i = 0; i < M; i++) { mPos[i * 3] = (Math.random() - 0.5) * 44; mPos[i * 3 + 1] = -4 + Math.random() * 13; mPos[i * 3 + 2] = -18 + Math.random() * 22; }
+  mGeo.setAttribute("position", new THREE.BufferAttribute(mPos, 3));
+  scene.add(new THREE.Points(mGeo, new THREE.PointsMaterial({ size: 0.12, map: glow, color: 0x7fe0dc, transparent: true, opacity: 0.38, depthWrite: false, blending: THREE.AdditiveBlending })));
+
+  let W = 1, H = 1;
+  function resize() {
+    W = hero.clientWidth; H = hero.clientHeight;
+    renderer.setSize(W, H, false);
+    camera.aspect = W / H;
+    camBase.z = W < 700 ? 30 : W < 1100 ? 18 : 15;
+    camera.updateProjectionMatrix();
+    const target = W < 700 ? 0.6 : 0.5;
+    const halfFov = THREE.MathUtils.degToRad(camera.fov / 2);
+    const aCurve = Math.atan((0.2 - camBase.y) / camBase.z);
+    lookAt.y = camBase.y + camBase.z * Math.tan(aCurve - Math.atan(target * Math.tan(halfFov)));
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const mouse = { x: 0, y: 0 };
+  if (!reduced) window.addEventListener("pointermove", e => { mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = (e.clientY / window.innerHeight) * 2 - 1; }, { passive: true });
+  camera.position.copy(camBase);
+  let visible = true;
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold: 0 }).observe(hero);
+
+  const v = new THREE.Vector3(), tmp = new THREE.Color();
+  const clock = new THREE.Clock();
+  const speed = reduced ? 0.25 : 1;
+  function frame() {
+    requestAnimationFrame(frame);
+    if (!visible || document.hidden) { clock.getDelta(); return; }
+    const dt = Math.min(clock.getDelta(), 0.05), time = clock.elapsedTime;
+    camera.position.lerp(new THREE.Vector3(camBase.x + mouse.x * 1.5, camBase.y - mouse.y * 0.7, camBase.z), 0.04);
+    camera.lookAt(lookAt);
+    lanes.forEach(L => {
+      for (let i = 0; i < L.N; i++) {
+        L.t[i] = (L.t[i] + L.s[i] * dt * speed) % 1;
+        const p = L.curve.getPointAt(L.t[i]);
+        L.pos[i * 3] = p.x; L.pos[i * 3 + 1] = p.y; L.pos[i * 3 + 2] = p.z;
+        const t = L.t[i];
+        if (t < L.tMerge - 0.05) tmp.copy(L.color);
+        else if (t < L.tMerge + 0.03) tmp.copy(L.color).lerp(cMerge, (t - (L.tMerge - 0.05)) / 0.08);
+        else tmp.copy(cMerge);
+        L.col[i * 3] = tmp.r; L.col[i * 3 + 1] = tmp.g; L.col[i * 3 + 2] = tmp.b;
+      }
+      L.geo.attributes.position.needsUpdate = true;
+      L.geo.attributes.color.needsUpdate = true;
+      L.shell.rotation.x += dt * 0.35 * speed;
+      L.shell.rotation.y += dt * 0.5 * speed;
+      const s = 1.6 + Math.sin(time * 1.6 + L.phase) * 0.2;
+      L.halo.scale.set(s, s, 1);
+    });
+    const ms = 2.2 + Math.sin(time * 1.2) * 0.25;
+    merge.scale.set(ms, ms, 1);
+    ring.rotation.y += dt * 0.6 * speed;
+    ring.rotation.x = 0.5;
+    for (let i = 0; i < M; i++) { mPos[i * 3 + 1] += dt * 0.12 * speed; if (mPos[i * 3 + 1] > 9) mPos[i * 3 + 1] = -4; }
+    mGeo.attributes.position.needsUpdate = true;
+    renderer.render(scene, camera);
+    const edge = W < 700 ? 30 : 60;
+    lanes.forEach(L => {
+      v.copy(L.grp.position).project(camera);
+      const x = (v.x * 0.5 + 0.5) * W, y = (-v.y * 0.5 + 0.5) * H;
+      if (v.z > 1 || x < edge || x > W - edge) { L.el.style.visibility = "hidden"; return; }
+      L.el.style.visibility = "visible";
+      L.el.style.transform = `translate(18px, -50%) translate(${x}px, ${y}px)`;
+    });
+  }
+  frame();
+  done();
+}
+
+/* =========================================================================
+   BOOT
+   ========================================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+  const safe = fn => { try { fn(); } catch (e) { console.error(fn.name, e); } };
+  safe(buildContent);
+  safe(initScreens);
+  safe(initLive);
+  safe(initDeck);
+  safe(initHero);
+});
+</script>
+<noscript><p style="padding:20px;text-align:center">This page needs JavaScript for its slides and animations.</p></noscript>
+</body>
+</html>
